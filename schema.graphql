@@ -19,15 +19,6 @@ type Mutation {
   updateProfile(avatar: String, bio: String, id: Int!, location: String, website: String): Profile
 }
 
-input PostCreateInput {
-  content: String
-  title: String!
-}
-
-input PostOrderByUpdatedAtInput {
-  updatedAt: SortOrder!
-}
-
 type Profile {
   avatar: String
   bio: String
@@ -40,11 +31,6 @@ type Profile {
 type Query {
   me: User
   users: [User!]!
-}
-
-enum SortOrder {
-  asc
-  desc
 }
 
 type Tweet {
@@ -60,15 +46,4 @@ type User {
   name: String
   profile: Profile
   tweets: Tweet
-}
-
-input UserCreateInput {
-  email: String!
-  name: String
-  posts: [PostCreateInput!]
-}
-
-input UserUniqueInput {
-  email: String
-  id: Int
 }
