@@ -25,5 +25,24 @@ export const Query = objectType({
         })
       },
     })
+
+    t.nonNull.list.nonNull.field('tweets', {
+      type: 'Tweet',
+      resolve: (_parent, _args, context: Context) => {
+        return context.prisma.tweet.findMany()
+      },
+    })
+
+    t.nullable.field('tweet', {
+      type: 'Tweet',
+      resolve: (_parent, args, context: Context) => {
+        const userId = getUserId(context)
+        return context.prisma.tweet.findUnique({
+          where: {
+            id: Number(userId),
+          },
+        })
+      }
+    })
   },
 })

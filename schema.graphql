@@ -31,6 +31,8 @@ type Profile {
 
 type Query {
   me: User
+  tweet: Tweet
+  tweets: [Tweet!]!
   users: [User!]!
 }
 
