@@ -16,6 +16,7 @@ model User {
   profile    Profile?
   likedTweet LikedTweet[]
   comments   Comment[]
+  following  Following[]
 }
 
 model Profile {
@@ -54,6 +55,18 @@ model Comment {
   content   String?
   tweet     Tweet?   @relation(fields: [tweetId], references: [id])
   tweetId   Int?
+  user      User?    @relation(fields: [userId], references: [id])
+  userId    Int?
+  comments  Comment[] @relation("CommentToComment")
+  comment   Comment?  @relation("CommentToComment", fields: [commentId], references: [id])
+  commentId Int?
+}
+
+model Following {
+  id        Int      @id @default(autoincrement())
+  name      String
+  avatar    String
+  followId  Int
   user      User?    @relation(fields: [userId], references: [id])
   userId    Int?
 }

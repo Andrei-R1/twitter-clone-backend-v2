@@ -47,5 +47,15 @@ export const User = objectType({
           .comments()
       },
     })
+    t.list.field('following', {
+      type: 'Following',
+      resolve: (parent, _, context: Context) => {
+        return context.prisma.user
+          .findUnique({
+            where: { id: parent.id || undefined },
+          })
+          .following()
+      },
+    })
   },
 })

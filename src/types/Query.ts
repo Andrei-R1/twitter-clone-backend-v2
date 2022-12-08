@@ -39,7 +39,6 @@ export const Query = objectType({
       },
     })
 
-    //getTweet by id
     t.nullable.field('tweet', {
       type: 'Tweet',
       args: {
@@ -47,6 +46,20 @@ export const Query = objectType({
       },
       resolve: (_parent, args, context: Context) => {
         return context.prisma.tweet.findUnique({
+          where: {
+            id: Number(args.id),
+          },
+        })
+      },
+    })
+
+    t.nullable.field('user', {
+      type: 'User',
+      args: {
+        id: intArg(),
+      },
+      resolve: (_parent, args, context: Context) => {
+        return context.prisma.user.findUnique({
           where: {
             id: Number(args.id),
           },

@@ -26,5 +26,15 @@ export const Comment = objectType({
           .tweet();
       },
     });
+    t.field('comment', {
+      type: 'Comment',
+      resolve: (parent, _, context) => {
+        return context.prisma.comment
+          .findUnique({
+            where: { id: parent.id || undefined },
+          })
+          .comment();
+      },
+    });
   },
 });

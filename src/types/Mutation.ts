@@ -173,5 +173,63 @@ export const Mutation = objectType({
         })
       },
     })
+
+    t.field('createReply', {
+      type: 'Comment',
+      args: {
+        content: nonNull(stringArg()),
+        id: nonNull(intArg()),
+        commentId: intArg(),
+      },
+      resolve: async (_parent, args, context: Context) => {
+        const userId = getUserId(context)
+        if (!userId) throw new Error('Not authenticated')
+        return context.prisma.comment.create({
+          data: {
+            content: args.content,
+            tweetId: Number(args.id),
+            userId: Number(userId),
+            commentId: Number(args.commentId),
+          },
+        })
+      },
+    })
+
+    t.field('follow' , {
+      type: 'Following',
+      args: {
+        name: nonNull(stringArg()),
+        followId: nonNull(intArg()),
+        avatar: nonNull(stringArg()),
+      },
+      resolve: async (_parent, args, context: Context) => {
+        const userId = getUserId(context)
+        if (!userId) throw new Error('Not authenticated')
+        return context.prisma.following.create({
+          data: {
+            name: args.name,
+            followId: Number(args.followId),
+            avatar: args.avatar,
+            userId: Number(userId),
+          },
+        })
+      },
+    })
+
+    t.field('deleteFollow', {
+      type: 'Following',
+      args: {
+        id: nonNull(intArg()),
+      },
+      resolve: async (_parent, args, context: Context) => {
+        const userId = getUserId(context)
+        if (!userId) throw new Error('Not authenticated')
+        return context.prisma.following.delete({
+          where: {
+            id: args.id,
+          },
+        })
+      },
+    })
   },
 })

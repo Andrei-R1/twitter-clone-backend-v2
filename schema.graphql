@@ -8,6 +8,7 @@ type AuthPayload {
 }
 
 type Comment {
+  comment: Comment
   content: String
   createdAt: DateTime!
   id: Int!
@@ -20,6 +21,14 @@ A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `dat
 """
 scalar DateTime
 
+type Following {
+  avatar: String!
+  followId: Int!
+  id: Int!
+  name: String!
+  user: User
+}
+
 type LikedTweet {
   id: Int!
   likedAt: DateTime!
@@ -30,8 +39,11 @@ type LikedTweet {
 type Mutation {
   createComment(content: String!, id: Int!): Comment
   createProfile(avatar: String, bio: String, location: String, website: String): Profile
+  createReply(commentId: Int, content: String!, id: Int!): Comment
   createTweet(content: String): Tweet
+  deleteFollow(id: Int!): Following
   deleteLike(id: Int!): LikedTweet
+  follow(avatar: String!, followId: Int!, name: String!): Following
   likeTweet(tweetId: Int!): LikedTweet
   login(email: String!, password: String!): AuthPayload
   signup(email: String!, name: String, password: String!): AuthPayload
@@ -51,6 +63,7 @@ type Query {
   me: User
   tweet(id: Int): Tweet
   tweets: [Tweet!]!
+  user(id: Int): User
   users: [User!]!
 }
 
@@ -66,6 +79,7 @@ type Tweet {
 type User {
   comments: [Comment]
   email: String!
+  following: [Following]
   id: Int!
   likedTweet: [LikedTweet]
   name: String
