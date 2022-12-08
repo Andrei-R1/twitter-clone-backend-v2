@@ -121,5 +121,22 @@ export const Mutation = objectType({
         })
       },
     })
+
+    t.field('likeTweet', {
+      type: 'LikedTweet',
+      args: {
+        tweetId: nonNull(intArg()),
+      },
+      resolve: async (_parent, args, context: Context) => {
+        const userId = getUserId(context)
+        if (!userId) throw new Error('Not authenticated')
+        return context.prisma.likedTweet.create({
+          data: {
+            tweetId: Number(args.tweetId),
+            userId: Number(userId),
+          },
+        })
+      },
+    })
   },
 })

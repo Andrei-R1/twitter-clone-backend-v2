@@ -19,5 +19,15 @@ export const Tweet = objectType({
           .author()
       },
     })
+    t.list.field('likes', {
+      type: 'LikedTweet',
+      resolve: (parent, _, context: Context) => {
+        return context.prisma.tweet
+          .findUnique({
+            where: { id: parent.id || undefined },
+          })
+          .likes()
+      },
+    }) 
   },
 })

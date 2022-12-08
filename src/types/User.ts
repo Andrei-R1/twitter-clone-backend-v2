@@ -27,5 +27,15 @@ export const User = objectType({
           .profile()
       },
     })
+    t.list.field('likedTweet', {
+      type: 'LikedTweet',
+      resolve: (parent, _, context: Context) => {
+        return context.prisma.user
+          .findUnique({
+            where: { id: parent.id || undefined },
+          })
+          .likedTweet()
+      },
+    })
   },
 })
