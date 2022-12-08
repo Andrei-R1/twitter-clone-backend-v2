@@ -7,8 +7,8 @@ export const User = objectType({
     t.nonNull.int('id')
     t.string('name')
     t.nonNull.string('email')
-    t.field('tweets', {
-      type: 'Tweet',
+    t.list.field('tweets', {
+      type: 'Tweet',      
       resolve: (parent, _, context: Context) => {
         return context.prisma.user
           .findUnique({

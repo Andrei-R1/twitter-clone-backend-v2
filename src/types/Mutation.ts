@@ -1,12 +1,7 @@
 import { APP_SECRET, getUserId } from '../utils'
 import { compare, hash } from 'bcryptjs'
 import { sign } from 'jsonwebtoken'
-import {
-  intArg,
-  nonNull,
-  objectType,
-  stringArg,
-} from 'nexus'
+import { intArg, nonNull, objectType, stringArg } from 'nexus'
 import { Context } from '../context'
 
 export const Mutation = objectType({
@@ -105,6 +100,23 @@ export const Mutation = objectType({
             location: args.location,
             website: args.website,
             avatar: args.avatar,
+          },
+        })
+      },
+    })
+
+    t.field('createTweet', {
+      type: 'Tweet',
+      args: {
+        content: stringArg(),
+      },
+      resolve: async (_parent, args, context: Context) => {
+        const userId = getUserId(context)
+        if (!userId) throw new Error('Not authenticated')
+        return context.prisma.tweet.create({
+          data: {
+            content: args.content,
+            authorId: Number(userId),
           },
         })
       },
