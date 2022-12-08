@@ -29,7 +29,11 @@ export const Query = objectType({
     t.nonNull.list.nonNull.field('tweets', {
       type: 'Tweet',
       resolve: (_parent, _args, context: Context) => {
-        return context.prisma.tweet.findMany()
+        return context.prisma.tweet.findMany({
+          orderBy: {
+            createdAt: 'desc',
+          },
+        })
       },
     })
 
