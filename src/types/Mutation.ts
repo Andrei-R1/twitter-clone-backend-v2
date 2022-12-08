@@ -138,5 +138,21 @@ export const Mutation = objectType({
         })
       },
     })
+
+    t.field('deleteLike',{
+      type: 'LikedTweet',
+      args: {
+        id: nonNull(intArg()),
+      },
+      resolve: async (_parent, args, context: Context) => {
+        const userId = getUserId(context)
+        if (!userId) throw new Error('Not authenticated')
+        return context.prisma.likedTweet.delete({
+          where: {
+            id: args.id,
+          },
+        })
+      },
+    })
   },
 })
