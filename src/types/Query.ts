@@ -1,5 +1,7 @@
 import { getUserId } from '../utils'
 import {
+  intArg,
+  nonNull,
   objectType,
 } from 'nexus'
 import { Context } from '../context'
@@ -37,16 +39,19 @@ export const Query = objectType({
       },
     })
 
+    //getTweet by id
     t.nullable.field('tweet', {
       type: 'Tweet',
+      args: {
+        id: intArg(),
+      },
       resolve: (_parent, args, context: Context) => {
-        const userId = getUserId(context)
         return context.prisma.tweet.findUnique({
           where: {
-            id: Number(userId),
+            id: Number(args.id),
           },
         })
-      }
+      },
     })
   },
 })

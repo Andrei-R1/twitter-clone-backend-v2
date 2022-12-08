@@ -28,6 +28,16 @@ export const Tweet = objectType({
           })
           .likes()
       },
-    }) 
+    })
+    t.list.field('comments', {
+      type: 'Comment',
+      resolve: (parent, _, context: Context) => {
+        return context.prisma.tweet
+          .findUnique({
+            where: { id: parent.id || undefined },
+          })
+          .comments()
+      },
+    })
   },
 })

@@ -154,5 +154,24 @@ export const Mutation = objectType({
         })
       },
     })
+
+    t.field('createComment', {
+      type: 'Comment',
+      args: {
+        content: nonNull(stringArg()),
+        id: nonNull(intArg()),
+      },
+      resolve: async (_parent, args, context: Context) => {
+        const userId = getUserId(context)
+        if (!userId) throw new Error('Not authenticated')
+        return context.prisma.comment.create({
+          data: {
+            content: args.content,
+            tweetId: Number(args.id),
+            userId: Number(userId),
+          },
+        })
+      },
+    })
   },
 })
